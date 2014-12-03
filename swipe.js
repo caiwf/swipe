@@ -21,7 +21,7 @@
         // 当前位置
         var nowDist = 0;
         // 当前索引
-        var index = 0;
+        var index = options.index || 0;
 
         // 切换的间隔
         var speed = options.speed || 300;
@@ -257,8 +257,8 @@
                 // 如果循环播放，在最后一个前面插入第一个的复制，在第一个的前面插入最后一个的复制
                 // 在一个循环结束时，先按正常过渡到复制的元素，在transitionEnd里面直接translate到相应的位置
                 // 如果直接硬切过去，体验有点不好
-                var firstChild = element.firstChild;
-                var lastChild = element.lastChild;
+                var firstChild = element.firstElementChild;
+                var lastChild = element.lastElementChild;
                 element.appendChild(firstChild.cloneNode(true));
                 element.insertBefore(lastChild.cloneNode(true), firstChild);
                 element.style.width = ((length + 2) * slideWidth) + 'px';
@@ -323,7 +323,7 @@
             }
             // 1: backward, -1: forward
             var direction = Math.abs(index - to) / (index - to);
-            move(slideWidth * direction + nowDist, slideSpeed || speed);
+            move(Math.abs(index - to)* slideWidth * direction + nowDist, slideSpeed || speed);
             index = to;
             offloadFn(options.callback && options.callback(index, slides[index]));
         }
